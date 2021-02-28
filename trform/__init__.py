@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import copy
 import sys
 import math
 import numpy as np
@@ -314,6 +315,8 @@ def rotateAntiClock(point, angle, origin = (0,0)):
 #dir = clockwise or anticlockwise
 
 def rotate(x, y, radians, dir, origin=(0,0)):
+    or1 = x
+    or2 = y
     l1 = []
     l2 = []
     if dir == "c":
@@ -330,35 +333,88 @@ def rotate(x, y, radians, dir, origin=(0,0)):
     x, y = l1, l2
     for i in range( len(x)):
         print(f"x = {x[i]}  y = {y[i]}")
-    plt.plot(
-        x,
-        y,
-        color="green",
-        linestyle="dashed",
-        linewidth=2,
-        marker="o",
-        markerfacecolor="blue",
-        markersize=8,
-    )
-
-    # setting x and y axis range
-    plt.ylim(-10, 40)
-    plt.xlim(-10, 40)
-
-    # naming the x axis
-    plt.xlabel("x - axis")
-    # naming the y axis
-    plt.ylabel("y - axis")
-
-    # giving a title to my graph
-    plt.title("Bresenham's Visualizer")
-
-    # function to show the plot
+    plt.rc('grid', linestyle="-", color='black')
+    plt.scatter(x, y, c ="blue") 
+    plt.scatter(or1, or2, c ="green") 
+    plt.xlabel(" X axis --->")
+    plt.ylabel(" Y axis --->")
+    plt.grid()
     plt.show()
     return x, y
+#expects a set of points and scaling factor
+def scaling(original, scaleFactor):
+    scaleFactor = 2
+    scaled = copy.deepcopy(original)
+    for i in range(len(scaled[0])):
+        scaled[0][i]=scaled[0][i]*scaleFactor
+        scaled[1][i]=scaled[1][i]*scaleFactor
+    # X = np.array(original)
+    X = np.array(original + scaled)
+
+    # X = np.array([[1,1], [2,2.5], [3, 1], [8, 7.5], [7, 9], [9, 9]])
+    r = 'red'
+    b = 'blue'
+    Y = []
+    Y += len(original)*[r]
+    Y += len(original)*[b]
+
+    #red is original colour
+    #blue is scaled colour
+    plt.figure()
+    plt.scatter(X[:, 0], X[:, 1], s = 170, color = Y[:])
+
+    t1 = plt.Polygon(X[:3,:], color=Y[0])
+    plt.gca().add_patch(t1)
+
+    t2 = plt.Polygon(X[3:6,:], color=Y[3])
+    plt.gca().add_patch(t2)
+
+    plt.show()
+
+def matrix_mul(matrix1,matrix2):
+	new_matrix = [[0,0,0],[0,0,0],[0,0,0]]
+	for i in range(len(matrix1)):
+	    for j in range(len(matrix2[0])):
+	        for k in range(len(matrix2)):
+	            new_matrix[i][j] += matrix1[i][k]*matrix2[k][j]
+	return np.around(new_matrix,decimals=2)
+
+def translate(original, Tx, Ty):
+    TranMatrix = np.zeros((3,3))
+    TranMatrix[0][0]=1
+    TranMatrix[0][2]=Tx
+    TranMatrix[1][1]=1
+    TranMatrix[1][2]=Ty
+    TranMatrix[2][2]=1
+
+    translated=matrix_mul(TranMatrix, original)
+    l = []
+    for i in range(len(translated)):
+        l.append([])
+        for j in range(len(translated[0])-1):
+            l[i].append(translated[i][j])
+    print(l)
+    X = np.array(original + l)
+
+    # X = np.array([[1,1], [2,2.5], [3, 1], [8, 7.5], [7, 9], [9, 9]])
+    r = 'red'
+    b = 'blue'
+    Y = []
+    Y += len(original)*[r]
+    Y += len(original)*[b]
+
+    plt.figure()
+    plt.scatter(X[:, 0], X[:, 1], s = 170, color = Y[:])
+
+    t1 = plt.Polygon(X[:3,:], color=Y[0])
+    plt.gca().add_patch(t1)
+
+    t2 = plt.Polygon(X[3:6,:], color=Y[len(original)+1])
+    plt.gca().add_patch(t2)
+
+    plt.show()
+
+                    
 
 
             
-
-
-    
