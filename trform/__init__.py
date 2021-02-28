@@ -334,8 +334,19 @@ def rotate(x, y, radians, dir, origin=(0,0)):
     for i in range( len(x)):
         print(f"x = {x[i]}  y = {y[i]}")
     plt.rc('grid', linestyle="-", color='black')
-    plt.scatter(x, y, c ="blue") 
-    plt.scatter(or1, or2, c ="green") 
+    plt.plot(
+        x,
+        y,
+        color="green",
+        linestyle="dashed",
+        linewidth=2,
+        marker="o",
+        markerfacecolor="blue",
+        markersize=8,
+    )
+
+    # plt.scatter(x, y,marker="o", c ="blue") 
+    # plt.scatter(or1, or2,marker="o", c ="green") 
     plt.xlabel(" X axis --->")
     plt.ylabel(" Y axis --->")
     plt.grid()
@@ -366,7 +377,7 @@ def scaling(original, scaleFactor):
     t1 = plt.Polygon(X[:3,:], color=Y[0])
     plt.gca().add_patch(t1)
 
-    t2 = plt.Polygon(X[3:6,:], color=Y[3])
+    t2 = plt.Polygon(X[3:6,:], color=Y[len(original)+1])
     plt.gca().add_patch(t2)
 
     plt.show()
