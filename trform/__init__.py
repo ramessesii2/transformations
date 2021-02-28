@@ -1,5 +1,8 @@
 import matplotlib.pyplot as plt
 import sys
+import math
+import numpy as np
+
 
 def brnhms(x1, y1, x2, y2): 
     x_data = []
@@ -71,6 +74,7 @@ def bres(a, b, c, d):
 
     # function to show the plot
     plt.show()
+    return x, y
 
 
 
@@ -125,6 +129,7 @@ def dda(a, b, c, d):
 
     # function to show the plot
     plt.show()
+    return x, y
 # dda(3,2,7,6)
 
 
@@ -215,6 +220,7 @@ def circle(c1, c2, r):
 
     # function to show the plot
     plt.show()
+    return x, y
 
 
 def ellipse(rx, ry, xc, yc):
@@ -276,3 +282,83 @@ def ellipse(rx, ry, xc, yc):
             dx = dx + (2 * ry * ry)
             dy = dy - (2 * rx * rx)
             d2 = d2 + dx - dy + (rx * rx)
+
+def rotate_around_point_highperfClock(xy, radians, origin=(0, 0)):
+    """Rotate a point around a given point.
+    I call this the "high performance" version since we're caching some
+    values that are needed >1 time. It's less readable than the previous
+    function but it's faster.
+    """
+    x, y = xy
+    offset_x, offset_y = origin
+    adjusted_x = (x - offset_x)
+    adjusted_y = (y - offset_y)
+    cos_rad = math.cos(radians)
+    sin_rad = math.sin(radians)
+    qx = offset_x + cos_rad * adjusted_x + sin_rad * adjusted_y
+    qy = offset_y + -sin_rad * adjusted_x + cos_rad * adjusted_y
+    return qx, qy
+
+def rotateAntiClock(point, angle, origin = (0,0)):
+    """
+    Rotate a point counterclockwise by a given angle around a given origin.
+
+    The angle should be given in radians.
+    """
+    ox, oy = origin
+    px, py = point
+
+    qx = ox + math.cos(angle) * (px - ox) - math.sin(angle) * (py - oy)
+    qy = oy + math.sin(angle) * (px - ox) + math.cos(angle) * (py - oy)
+    return qx, qy
+#dir = clockwise or anticlockwise
+
+def rotate(x, y, radians, dir, origin=(0,0)):
+    l1 = []
+    l2 = []
+    if dir == "c":
+        for i in range(len(x)):
+            a,b = rotate_around_point_highperfClock((x[i], y[i]), math.radians(radians), origin)
+            l1.append(a) 
+            l2.append(b) 
+    else:
+        for i in range(len(x)):
+            a,b = rotateAntiClock((x[i], y[i]), math.radians(radians), origin)
+            l1.append(a) 
+            l2.append(b) 
+    
+    x, y = l1, l2
+    for i in range( len(x)):
+        print(f"x = {x[i]}  y = {y[i]}")
+    plt.plot(
+        x,
+        y,
+        color="green",
+        linestyle="dashed",
+        linewidth=2,
+        marker="o",
+        markerfacecolor="blue",
+        markersize=8,
+    )
+
+    # setting x and y axis range
+    plt.ylim(-10, 40)
+    plt.xlim(-10, 40)
+
+    # naming the x axis
+    plt.xlabel("x - axis")
+    # naming the y axis
+    plt.ylabel("y - axis")
+
+    # giving a title to my graph
+    plt.title("Bresenham's Visualizer")
+
+    # function to show the plot
+    plt.show()
+    return x, y
+
+
+            
+
+
+    
