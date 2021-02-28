@@ -1,5 +1,9 @@
 import matplotlib.pyplot as plt
+import copy
 import sys
+import math
+import numpy as np
+
 
 def brnhms(x1, y1, x2, y2): 
     x_data = []
@@ -71,6 +75,7 @@ def bres(a, b, c, d):
 
     # function to show the plot
     plt.show()
+    return x, y
 
 
 
@@ -125,6 +130,7 @@ def dda(a, b, c, d):
 
     # function to show the plot
     plt.show()
+    return x, y
 # dda(3,2,7,6)
 
 
@@ -215,6 +221,7 @@ def circle(c1, c2, r):
 
     # function to show the plot
     plt.show()
+    return x, y
 
 
 def ellipse(rx, ry, xc, yc):
@@ -276,3 +283,149 @@ def ellipse(rx, ry, xc, yc):
             dx = dx + (2 * ry * ry)
             dy = dy - (2 * rx * rx)
             d2 = d2 + dx - dy + (rx * rx)
+
+def rotate_around_point_highperfClock(xy, radians, origin=(0, 0)):
+    """Rotate a point around a given point.
+    I call this the "high performance" version since we're caching some
+    values that are needed >1 time. It's less readable than the previous
+    function but it's faster.
+    """
+    x, y = xy
+    offset_x, offset_y = origin
+    adjusted_x = (x - offset_x)
+    adjusted_y = (y - offset_y)
+    cos_rad = math.cos(radians)
+    sin_rad = math.sin(radians)
+    qx = offset_x + cos_rad * adjusted_x + sin_rad * adjusted_y
+    qy = offset_y + -sin_rad * adjusted_x + cos_rad * adjusted_y
+    return qx, qy
+
+def rotateAntiClock(point, angle, origin = (0,0)):
+    """
+    Rotate a point counterclockwise by a given angle around a given origin.
+
+    The angle should be given in radians.
+    """
+    ox, oy = origin
+    px, py = point
+
+    qx = ox + math.cos(angle) * (px - ox) - math.sin(angle) * (py - oy)
+    qy = oy + math.sin(angle) * (px - ox) + math.cos(angle) * (py - oy)
+    return qx, qy
+#dir = clockwise or anticlockwise
+
+def rotate(x, y, radians, dir, origin=(0,0)):
+    or1 = x
+    or2 = y
+    l1 = []
+    l2 = []
+    if dir == "c":
+        for i in range(len(x)):
+            a,b = rotate_around_point_highperfClock((x[i], y[i]), math.radians(radians), origin)
+            l1.append(a) 
+            l2.append(b) 
+    else:
+        for i in range(len(x)):
+            a,b = rotateAntiClock((x[i], y[i]), math.radians(radians), origin)
+            l1.append(a) 
+            l2.append(b) 
+    
+    x, y = l1, l2
+    for i in range( len(x)):
+        print(f"x = {x[i]}  y = {y[i]}")
+    plt.rc('grid', linestyle="-", color='black')
+    plt.plot(
+        x,
+        y,
+        color="green",
+        linestyle="dashed",
+        linewidth=2,
+        marker="o",
+        markerfacecolor="blue",
+        markersize=8,
+    )
+
+    # plt.scatter(x, y,marker="o", c ="blue") 
+    # plt.scatter(or1, or2,marker="o", c ="green") 
+    plt.xlabel(" X axis --->")
+    plt.ylabel(" Y axis --->")
+    plt.grid()
+    plt.show()
+    return x, y
+#expects a set of points and scaling factor
+def scaling(original, scaleFactor):
+    scaleFactor = 2
+    scaled = copy.deepcopy(original)
+    for i in range(len(scaled[0])):
+        scaled[0][i]=scaled[0][i]*scaleFactor
+        scaled[1][i]=scaled[1][i]*scaleFactor
+    # X = np.array(original)
+    X = np.array(original + scaled)
+
+    # X = np.array([[1,1], [2,2.5], [3, 1], [8, 7.5], [7, 9], [9, 9]])
+    r = 'red'
+    b = 'blue'
+    Y = []
+    Y += len(original)*[r]
+    Y += len(original)*[b]
+
+    #red is original colour
+    #blue is scaled colour
+    plt.figure()
+    plt.scatter(X[:, 0], X[:, 1], s = 170, color = Y[:])
+
+    t1 = plt.Polygon(X[:3,:], color=Y[0])
+    plt.gca().add_patch(t1)
+
+    t2 = plt.Polygon(X[3:6,:], color=Y[len(original)+1])
+    plt.gca().add_patch(t2)
+
+    plt.show()
+
+def matrix_mul(matrix1,matrix2):
+	new_matrix = [[0,0,0],[0,0,0],[0,0,0]]
+	for i in range(len(matrix1)):
+	    for j in range(len(matrix2[0])):
+	        for k in range(len(matrix2)):
+	            new_matrix[i][j] += matrix1[i][k]*matrix2[k][j]
+	return np.around(new_matrix,decimals=2)
+
+def translate(original, Tx, Ty):
+    TranMatrix = np.zeros((3,3))
+    TranMatrix[0][0]=1
+    TranMatrix[0][2]=Tx
+    TranMatrix[1][1]=1
+    TranMatrix[1][2]=Ty
+    TranMatrix[2][2]=1
+
+    translated=matrix_mul(TranMatrix, original)
+    l = []
+    for i in range(len(translated)):
+        l.append([])
+        for j in range(len(translated[0])-1):
+            l[i].append(translated[i][j])
+    print(l)
+    X = np.array(original + l)
+
+    # X = np.array([[1,1], [2,2.5], [3, 1], [8, 7.5], [7, 9], [9, 9]])
+    r = 'red'
+    b = 'blue'
+    Y = []
+    Y += len(original)*[r]
+    Y += len(original)*[b]
+
+    plt.figure()
+    plt.scatter(X[:, 0], X[:, 1], s = 170, color = Y[:])
+
+    t1 = plt.Polygon(X[:3,:], color=Y[0])
+    plt.gca().add_patch(t1)
+
+    t2 = plt.Polygon(X[3:6,:], color=Y[len(original)+1])
+    plt.gca().add_patch(t2)
+
+    plt.show()
+
+                    
+
+
+            

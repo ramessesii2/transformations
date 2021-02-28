@@ -1,16 +1,15 @@
 from setuptools import setup, find_packages
- 
 classifiers = [
-  'Development Status :: 3 - Production/Stable',
+  'Development Status :: 5 - Production/Stable',
   'Intended Audience :: Education',
-  'Operating System :: Linux, Windows',
+  'Operating System :: Microsoft :: Windows :: Windows 10',
   'License :: OSI Approved :: MIT License',
   'Programming Language :: Python :: 3'
 ]
  
 setup(
-  name='trform',
-  version='0.0.1',
+  name='transform',
+  version='0.02',
   description='A Computer Graphics library to implement and visulaize how founding algorithms of Graphics work.',
   long_description=open('README.md').read() + '\n\n' + open('CHANGELOG.txt').read(),
   url='',  
@@ -20,5 +19,5 @@ setup(
   classifiers=classifiers,
   keywords='transform, 2d, computer-graphics', 
   packages=find_packages(),
-  install_requires=['matplotlib'] 
+  install_requires=[''] 
 )

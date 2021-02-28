@@ -1,6 +1,6 @@
 Metadata-Version: 1.1
-Name: trform
-Version: 0.0.1
+Name: transform
+Version: 0.2
 Summary: A Computer Graphics library to implement and visulaize how founding algorithms of Graphics work.
 Home-page: UNKNOWN
 Author: Satyam Bhardwaj
@@ -8,6 +8,17 @@ Author-email: stmbhardwaj@gmail.com
 License: MIT
 Description: # transformations
         A library for transformations
+        
+        Developed by -
+            Satyam Bhardwaj
+            Anish Bhanu
+        
+        Start:
+        
+        import transform as tf
+        tf.circle( (center), radius ) -> draws a circle
+        tf.rotate(Xpoints, Ypoints, radians, "c(forClockwise, else "a")", origin) -> does the job of rotating
+        and much more.. 
         
         
         Change Log
@@ -18,8 +29,8 @@ Description: # transformations
         - First Release
 Keywords: transform,2d,computer-graphics
 Platform: UNKNOWN
-Classifier: Development Status :: 3 - Production/Stable
+Classifier: Development Status :: 5 - Production/Stable
 Classifier: Intended Audience :: Education
-Classifier: Operating System :: Linux, Windows
+Classifier: Operating System :: Microsoft :: Windows :: Windows 10
 Classifier: License :: OSI Approved :: MIT License
 Classifier: Programming Language :: Python :: 3
