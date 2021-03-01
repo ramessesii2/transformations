@@ -2,8 +2,11 @@
 _**A library for transformations**_
 
 ## Developed by -
- ### Satyam Bhardwaj
- ### Anish Bhanu
+ #### Satyam Bhardwaj
+ #### Anish Bhanu
+ #### Rahul Kumar
+ #### Chandan Kumar 
+ #### Shivam Upadhyay
 
 ## Getting Started:
 **install the package from**:
