@@ -1,12 +1,9 @@
-# transformations
-_**A library for transformations**_
+# transformations - **A library for fundamental transformations in Computer Graphics**
 
-## Developed by -
- #### Satyam Bhardwaj
- #### Anish Bhanu
- #### Rahul Kumar
- #### Chandan Kumar 
- #### Shivam Upadhyay
+
+ ### Coded by  - **Satyam Bhardwaj**
+ ### Documented by  - **Anish Bhanu**
+
 
 ## Getting Started:
 **install the package from**:
