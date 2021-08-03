@@ -1,8 +1,9 @@
 # transformations - **A library for fundamental transformations in Computer Graphics**
 
 
- ### Coded by  - **Satyam Bhardwaj**
- ### Documented by  - **Anish Bhanu**
+ ### Coded by  - 
+ ### **Satyam Bhardwaj**
+###  **Anish Bhanu**
 
 
 ## Getting Started:
